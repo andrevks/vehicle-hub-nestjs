@@ -1,98 +1,45 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { CreateVehicleBodySchema } from './dto/create-vehicle.dto'
-import { PrismaService } from 'src/database/prisma/prisma.service'
 import { PageQueryParamSchema } from './dto/list-vehicle.dto'
 import { UpdateVehicleBodySchema } from './dto/update-vehicle.dto'
+import { IVehicleRepository } from './vehicle.repository'
 
 @Injectable()
 export class VehicleService {
-  constructor(private prisma: PrismaService) {}
-  async create(createVehicleBodySchema: CreateVehicleBodySchema) {
-    const { placa, chassi, renavam, modelo, marca, ano } =
-      createVehicleBodySchema
+  constructor(
+    @Inject('IVehicleRepository')
+    private vehicleRepository: IVehicleRepository,
+  ) {}
 
-    await this.prisma.vehicle.create({
-      data: {
-        placa,
-        chassi,
-        renavam,
-        modelo,
-        marca,
-        ano,
-      },
-    })
+  async create(createVehicleBodySchema: CreateVehicleBodySchema) {
+    await this.vehicleRepository.create(createVehicleBodySchema)
   }
 
   async findAll(page: PageQueryParamSchema) {
-    const perPage = 10
-    const vehicles = await this.prisma.vehicle.findMany({
-      take: perPage,
-      skip: (page - 1) * perPage,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
-
-    return {
-      vehicles,
-    }
+    return this.vehicleRepository.findAll(page)
   }
 
   async findOne(id: number) {
-    const vehicle = await this.prisma.vehicle.findFirst({
-      where: {
-        id,
-      },
-    })
-
-    if (!vehicle) {
-      throw new Error('Vehicle not found')
-    }
-
-    return vehicle
+    return this.vehicleRepository.findOne(id)
   }
 
   async update(id: number, updateVehicleBodySchema: UpdateVehicleBodySchema) {
-    const vehicle = await this.prisma.vehicle.findFirst({
-      where: { id },
-    })
+    const vehicle = await this.vehicleRepository.findOne(id)
 
     if (!vehicle) {
-      throw new Error('Vehicle not found')
+      throw new NotFoundException(`Vehicle with ID ${id} not found`)
     }
 
-    const { placa, chassi, renavam, modelo, marca, ano } =
-      updateVehicleBodySchema
-    await this.prisma.vehicle.update({
-      where: {
-        id,
-      },
-      data: {
-        placa,
-        chassi,
-        renavam,
-        modelo,
-        marca,
-        ano,
-      },
-    })
+    await this.vehicleRepository.update(id, updateVehicleBodySchema)
   }
 
   async remove(id: number) {
-    const vehicle = await this.prisma.vehicle.findFirst({
-      where: {
-        id,
-      },
-    })
+    const vehicle = await this.vehicleRepository.findOne(id)
 
     if (!vehicle) {
-      throw new Error('Vehicle not found')
+      throw new NotFoundException(`Vehicle with ID ${id} not found`)
     }
 
-    await this.prisma.vehicle.delete({
-      where: {
-        id,
-      },
-    })
+    await this.vehicleRepository.remove(id)
   }
 }

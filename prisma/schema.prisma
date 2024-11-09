@@ -14,11 +14,15 @@ datasource db {
 }
 
 model Vehicle {
-  id      Int    @id @default(autoincrement())
-  placa   String
-  chassi  String
-  renavam String
-  modelo  String
-  marca   String
-  ano     Int
+  id        Int       @id @default(autoincrement())
+  placa     String
+  chassi    String
+  renavam   String
+  modelo    String
+  marca     String
+  ano       Int
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("vehicles")
 }

@@ -1,1 +1,0 @@
-# vehicle-hub-nestjs

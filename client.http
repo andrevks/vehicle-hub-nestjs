@@ -1,0 +1,18 @@
+@baseUrl = http://localhost:3333
+
+@name create_vehicle
+POST {{baseUrl}}/vehicle
+Content-Type: application/json
+
+{
+  
+}
+
+####
+
+POST {{baseUrl}}/vehicle
+Content-Type: application/json
+
+{
+  
+}

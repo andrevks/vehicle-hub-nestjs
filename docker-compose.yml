@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  nestjs_app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs_app
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - "3333:3333"

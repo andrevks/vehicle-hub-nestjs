@@ -1,18 +1,44 @@
 @baseUrl = http://localhost:3333
 
-@name create_vehicle
-POST {{baseUrl}}/vehicle
+POST {{baseUrl}}/vehicles
 Content-Type: application/json
 
 {
-  
+  "placa": "BRA2E19",
+  "chassi": "9BWZZZ377VT004251",
+  "renavam": "12345678910",
+  "modelo": "Civic",
+  "marca": "Honda",
+  "ano": 2022
 }
 
 ####
 
-POST {{baseUrl}}/vehicle
+GET {{baseUrl}}/vehicles?page=1
+Content-Type: application/json
+
+
+###
+
+DELETE {{baseUrl}}/vehicles/2
+Content-Type: application/json
+
+
+
+### 
+PUT {{baseUrl}}/vehicles/10
 Content-Type: application/json
 
 {
-  
+  "placa": "BRA2E19",
+  "chassi": "9BWZZZ377VT004251",
+  "renavam": "12345678910",
+  "modelo": "Corola",
+  "marca": "Toyota",
+  "ano": 2023
 }
+
+### 
+GET {{baseUrl}}/vehicles/10
+Content-Type: application/json
+

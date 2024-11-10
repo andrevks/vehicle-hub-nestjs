@@ -12,7 +12,7 @@ export class VehicleService {
   ) {}
 
   async create(createVehicleBodySchema: CreateVehicleBodySchema) {
-    await this.vehicleRepository.create(createVehicleBodySchema)
+    return this.vehicleRepository.create(createVehicleBodySchema)
   }
 
   async findAll(page: PageQueryParamSchema) {
@@ -20,7 +20,13 @@ export class VehicleService {
   }
 
   async findOne(id: number) {
-    return this.vehicleRepository.findOne(id)
+    const vehicle = await this.vehicleRepository.findOne(id)
+
+    if (!vehicle) {
+      throw new NotFoundException(`Vehicle with ID ${id} not found`)
+    }
+
+    return vehicle
   }
 
   async update(id: number, updateVehicleBodySchema: UpdateVehicleBodySchema) {
@@ -30,7 +36,7 @@ export class VehicleService {
       throw new NotFoundException(`Vehicle with ID ${id} not found`)
     }
 
-    await this.vehicleRepository.update(id, updateVehicleBodySchema)
+    return await this.vehicleRepository.update(id, updateVehicleBodySchema)
   }
 
   async remove(id: number) {

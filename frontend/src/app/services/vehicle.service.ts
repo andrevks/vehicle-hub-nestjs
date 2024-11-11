@@ -15,6 +15,9 @@ export interface Vehicle {
   updatedAt: Date | null
 }
 
+export interface CreateVehicleDTO
+  extends Omit<Vehicle, 'id' | 'createdAt' | 'updatedAt'> {}
+
 export interface VehiclePagination {
   vehicles: Vehicle[]
   pagination: {
@@ -42,5 +45,24 @@ export class VehicleService {
     return this.http.get<VehiclePagination>(this.apiUrl, {
       params,
     })
+  }
+
+  getVehicle(id: number): Observable<Vehicle> {
+    return this.http.get<Vehicle>(`${this.apiUrl}/${id}`)
+  }
+
+  createVehicle(vehicle: CreateVehicleDTO): Observable<Vehicle> {
+    return this.http.post<Vehicle>(this.apiUrl, vehicle)
+  }
+
+  updateVehicle(
+    id: number,
+    vehicle: Partial<CreateVehicleDTO>,
+  ): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.apiUrl}/${id}`, vehicle)
+  }
+
+  deleteVehicle(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`)
   }
 }

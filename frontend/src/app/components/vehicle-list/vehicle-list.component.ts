@@ -5,6 +5,7 @@ import {
   VehicleService,
 } from '../../services/vehicle.service'
 import { CommonModule } from '@angular/common'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-vehicle-list',
@@ -25,6 +26,7 @@ export class VehicleListComponent implements OnInit {
   constructor(
     private vehicleService: VehicleService,
     private cdr: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +50,25 @@ export class VehicleListComponent implements OnInit {
         this.isLoading = false
       },
     })
+  }
+
+  navigateToCreate() {
+    this.router.navigate(['/vehicles/new'])
+  }
+
+  deleteVehicle(id: number) {
+    if (confirm('Tem certeza que deseja excluir o veículo?')) {
+      this.vehicleService.deleteVehicle(id).subscribe({
+        next: () => this.fetchVehicles(this.currentPage),
+        error: () => {
+          this.errorMessage = 'Não foi possível excluir o veículo'
+        },
+      })
+    }
+  }
+
+  editVehicle(id: number) {
+    this.router.navigate(['/vehicles/edit', id])
   }
 
   onPageChange(page: number) {

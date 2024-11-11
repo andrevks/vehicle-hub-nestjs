@@ -1,31 +1,45 @@
 <div *ngIf="isLoading" class="loading">Carregando...</div>
 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-<div class="table-container">
-  <table *ngIf="!isLoading && !errorMessage && vehicles.length > 0">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Placa</th>
-        <th>Chassi</th>
-        <th>Renavam</th>
-        <th>Modelo</th>
-        <th>Marca</th>
-        <th>Ano</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let vehicle of vehicles">
-        <td>{{ vehicle.id }}</td>
-        <td>{{ vehicle.placa }}</td>
-        <td>{{ vehicle.chassi }}</td>
-        <td>{{ vehicle.renavam }}</td>
-        <td>{{ vehicle.modelo }}</td>
-        <td>{{ vehicle.marca }}</td>
-        <td>{{ vehicle.ano }}</td>
-      </tr>
-    </tbody>
-  </table>
+
+<div class="central-container">
+  <div class="vehicle-list-header">
+    <button (click)="navigateToCreate()" class="add-button">Adicionar Veículo</button>
+  </div>
+
+  <div class="table-container">
+    <table *ngIf="!isLoading && !errorMessage && vehicles.length > 0">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Placa</th>
+          <th>Chassi</th>
+          <th>Renavam</th>
+          <th>Modelo</th>
+          <th>Marca</th>
+          <th>Ano</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehicle of vehicles">
+          <td>{{ vehicle.id }}</td>
+          <td>{{ vehicle.placa }}</td>
+          <td>{{ vehicle.chassi }}</td>
+          <td>{{ vehicle.renavam }}</td>
+          <td>{{ vehicle.modelo }}</td>
+          <td>{{ vehicle.marca }}</td>
+          <td>{{ vehicle.ano }}</td>
+          <td>
+            <button (click)="editVehicle(vehicle.id)" class="icon-button" title="Editar">Editar</button>
+            <button (click)="deleteVehicle(vehicle.id)" class="icon-button delete-button"
+              title="Excluir">Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div *ngIf="totalPages && totalPages > 1 && !isLoading" class="pagination-controls">

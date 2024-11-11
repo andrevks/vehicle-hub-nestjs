@@ -1,0 +1,39 @@
+<div *ngIf="isLoading" class="loading">Carregando...</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<!-- Responsive Table for Displaying Vehicles -->
+<div class="table-container">
+  <table *ngIf="!isLoading && !errorMessage && vehicles.length > 0">
+    <thead>
+      <tr>
+        <th>Placa</th>
+        <th>Chassi</th>
+        <th>Renavam</th>
+        <th>Modelo</th>
+        <th>Marca</th>
+        <th>Ano</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vehicle of vehicles">
+        <td>{{ vehicle.placa }}</td>
+        <td>{{ vehicle.chassi }}</td>
+        <td>{{ vehicle.renavam }}</td>
+        <td>{{ vehicle.modelo }}</td>
+        <td>{{ vehicle.marca }}</td>
+        <td>{{ vehicle.ano }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination Controls -->
+<div *ngIf="totalPages && totalPages > 1" class="pagination-controls">
+  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+    Previous
+  </button>
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+  <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
+    Next
+  </button>
+</div>

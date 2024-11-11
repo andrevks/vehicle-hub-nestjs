@@ -7,8 +7,13 @@
     <button (click)="navigateToCreate()" class="add-button">Adicionar Veículo</button>
   </div>
 
-  <div class="table-container">
-    <table *ngIf="!isLoading && !errorMessage && vehicles.length > 0">
+  <div *ngIf="!isLoading && !errorMessage && vehicles.length === 0" class="no-vehicles-message">
+    <h2>Nenhum veículo cadastrado ainda</h2>
+    <p>Parece que não há veículos cadastrados no sistema. Clique em "Adicionar Veículo" para cadastrar o primeiro!</p>
+  </div>
+
+  <div class="table-container"  *ngIf="!isLoading && !errorMessage && vehicles.length > 0">
+    <table>
       <thead>
         <tr>
           <th>Id</th>

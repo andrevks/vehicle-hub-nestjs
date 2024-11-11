@@ -31,6 +31,25 @@
   width: 100%;
 }
 
+.no-vehicles-message {
+  text-align: center;
+  padding: 40px;
+  margin: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-vehicles-message h2 {
+  font-size: 1.8em;
+  color: #fbbb01;
+  margin-bottom: 10px;
+}
+
+.no-vehicles-message p {
+  font-size: 1.2em;
+  color: #555;
+}
 
 .add-button {
   padding: 10px 20px;

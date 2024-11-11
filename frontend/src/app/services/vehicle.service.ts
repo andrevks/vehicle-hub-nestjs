@@ -15,6 +15,16 @@ export interface Vehicle {
   updatedAt: Date | null
 }
 
+export interface VehiclePagination {
+  vehicles: Vehicle[]
+  pagination: {
+    totalItems: number
+    totalPages: number
+    currentPage: number
+    limit: number
+  }
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -22,9 +32,14 @@ export class VehicleService {
   private apiUrl = `${environment.apiBaseUrl}/vehicles`
   constructor(private http: HttpClient) {}
 
-  getVehicles(page: number = 1): Observable<Vehicle[]> {
-    const params = new HttpParams().set('page', page.toString())
-    return this.http.get<Vehicle[]>(this.apiUrl, {
+  getVehicles(
+    page: number = 1,
+    limit: number = 10,
+  ): Observable<VehiclePagination> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString())
+    return this.http.get<VehiclePagination>(this.apiUrl, {
       params,
     })
   }

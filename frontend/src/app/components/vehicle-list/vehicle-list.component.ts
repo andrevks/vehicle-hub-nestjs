@@ -1,5 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
-import { Vehicle, VehicleService } from '../../services/vehicle.service'
+import {
+  Vehicle,
+  VehiclePagination,
+  VehicleService,
+} from '../../services/vehicle.service'
 import { CommonModule } from '@angular/common'
 
 @Component({
@@ -13,8 +17,10 @@ export class VehicleListComponent implements OnInit {
   vehicles: Vehicle[] = []
   isLoading: boolean = true
   errorMessage: string | null = null
-  currentPage = 1
-  totalPages: number | undefined
+  currentPage: number = 1
+  totalPages: number = 1
+  limit: number = 10
+  totalItems: number = 0
 
   constructor(
     private vehicleService: VehicleService,
@@ -28,13 +34,14 @@ export class VehicleListComponent implements OnInit {
   fetchVehicles(page: number = 1) {
     this.isLoading = true
     this.errorMessage = null
-    this.vehicleService.getVehicles(page).subscribe({
-      next: (response) => {
-        this.vehicles = response
-        console.log('Vehicles loaded:', this.vehicles)
-        this.totalPages = response.length
-        this.cdr.detectChanges()
+    this.vehicleService.getVehicles(page, this.limit).subscribe({
+      next: ({ pagination, vehicles }: VehiclePagination) => {
+        this.vehicles = vehicles
+        this.currentPage = pagination.currentPage
+        this.totalPages = pagination.totalPages
+        this.totalItems = pagination.totalItems
         this.isLoading = false
+        this.cdr.detectChanges()
       },
       error: () => {
         this.errorMessage = 'Não foi possível carregar os veículos'
@@ -44,7 +51,9 @@ export class VehicleListComponent implements OnInit {
   }
 
   onPageChange(page: number) {
-    this.currentPage = page
-    this.fetchVehicles(page)
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page
+      this.fetchVehicles(page)
+    }
   }
 }

@@ -56,7 +56,7 @@ describe('VehicleService', () => {
   })
 
   describe('findAll', () => {
-    it('should return a list of vehicles', async () => {
+    it('should return a paginated list of vehicles with info about pagination', async () => {
       const vehicles = [
         {
           id: 1,
@@ -81,12 +81,25 @@ describe('VehicleService', () => {
           updatedAt: null,
         },
       ]
-      vehicleRepository.findAll.resolves(vehicles)
+      const totalItems = vehicles.length
+      const page = 1
+      const limit = 10
+
+      vehicleRepository.findAll.resolves([vehicles, totalItems])
 
       const result = await vehicleService.findAll(1)
 
-      expect(vehicleRepository.findAll.calledOnceWithExactly(1)).to.equal(true)
-      expect(result).to.deep.equal(vehicles)
+      expect(
+        vehicleRepository.findAll.calledOnceWithExactly(page, limit),
+      ).to.equal(true)
+      expect(result.vehicles).to.deep.equal(vehicles)
+
+      expect(result.pagination).to.deep.equal({
+        totalItems,
+        totalPages: Math.ceil(totalItems / limit),
+        currentPage: page,
+        limit,
+      })
     })
   })
 

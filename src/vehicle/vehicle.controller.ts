@@ -35,8 +35,11 @@ export class VehicleController {
   }
 
   @Get()
-  findAll(@Query('page', queryValidationPipe) page: PageQueryParamSchema) {
-    return this.vehicleService.findAll(page)
+  findAll(
+    @Query('page', queryValidationPipe) page: PageQueryParamSchema,
+    @Query('limit', queryValidationPipe) limit?: PageQueryParamSchema,
+  ) {
+    return this.vehicleService.findAll(page, limit)
   }
 
   @Get(':id')

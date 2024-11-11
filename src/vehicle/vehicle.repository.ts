@@ -7,7 +7,7 @@ import { Vehicle } from './entities/vehicle.entity'
 
 export interface IVehicleRepository {
   create(data: CreateVehicleBodySchema): Promise<Vehicle>
-  findAll(page: number, perPage?: number): Promise<Vehicle[]>
+  findAll(page: number, limit?: number): Promise<[Vehicle[], number]>
   findOne(id: number): Promise<Vehicle | null>
   update(id: number, data: UpdateVehicleBodySchema): Promise<Vehicle>
   remove(id: number): Promise<void>
@@ -34,15 +34,22 @@ export class PrismaVehicleRepository implements IVehicleRepository {
     })
   }
 
-  async findAll(page: PageQueryParamSchema): Promise<Vehicle[]> {
-    const perPage = 10
-    return this.prisma.vehicle.findMany({
-      take: perPage,
-      skip: (page - 1) * perPage,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
+  async findAll(
+    page: PageQueryParamSchema,
+    limit: number,
+  ): Promise<[Vehicle[], number]> {
+    const [vehicles, totalItems] = await this.prisma.$transaction([
+      this.prisma.vehicle.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.prisma.vehicle.count(),
+    ])
+
+    return [vehicles, totalItems]
   }
 
   async findOne(id: number): Promise<Vehicle | null> {

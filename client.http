@@ -14,7 +14,7 @@ Content-Type: application/json
 
 ####
 
-GET {{baseUrl}}/vehicles?page=1
+GET {{baseUrl}}/vehicles?page=1&limit=39
 Content-Type: application/json
 
 

@@ -15,8 +15,22 @@ export class VehicleService {
     return this.vehicleRepository.create(createVehicleBodySchema)
   }
 
-  async findAll(page: PageQueryParamSchema) {
-    return this.vehicleRepository.findAll(page)
+  async findAll(page: PageQueryParamSchema, limit: number = 10) {
+    const [vehicles, totalItems] = await this.vehicleRepository.findAll(
+      page,
+      limit,
+    )
+
+    const totalPages = Math.ceil(totalItems / limit)
+    return {
+      vehicles,
+      pagination: {
+        totalItems,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    }
   }
 
   async findOne(id: number) {

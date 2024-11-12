@@ -1,4 +1,3 @@
-# vehicle-hub-nestjs
 
 <h1 align="center" style="font-family: 'Montserrat', sans-serif; font-size: 64px; color: #3498DB;">
   Vehicle Hub - NestJS & Angular

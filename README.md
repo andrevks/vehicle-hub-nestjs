@@ -28,7 +28,6 @@ Sistema completo de cadastro e gerenciamento de veículos com backend em NestJS 
 
 - **Angular CLI**: v18.2.11 ou superior.
 - **Node.js**: v18.19.1 ou superior (recomendado).
-- **Editor de Código**: Visual Studio Code recomendado para edição de arquivos.
 ---
 
 ## Configuração e Execução

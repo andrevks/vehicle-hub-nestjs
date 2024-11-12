@@ -182,7 +182,7 @@ Atualiza os dados de um veículo específico.
 ### **DELETE** `/vehicles/{id}`
 Deleta um veículo específico.
 
-## Testes Manuais das APIs
+## Utilização da APIs
 
 Para realizar testes manuais das APIs, você pode utilizar:
 
